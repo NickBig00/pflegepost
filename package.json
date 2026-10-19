@@ -1,0 +1,14 @@
+{
+  "name": "pflegepost-root",
+  "private": true,
+  "description": "Repo-level tooling (Supabase CLI for migrations, local stack and pgTAP tests).",
+  "scripts": {
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:test": "supabase test db"
+  },
+  "devDependencies": {
+    "supabase": "2.121.0"
+  }
+}

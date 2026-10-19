@@ -9,7 +9,7 @@ fi
 
 cd "${CLAUDE_PROJECT_DIR:-$(dirname "$0")/..}"
 
-for dir in app web; do
+for dir in . app web; do
   if [ -f "$dir/package-lock.json" ] && [ ! -d "$dir/node_modules" ]; then
     echo "Installing dependencies in $dir…"
     (cd "$dir" && npm ci --no-audit --no-fund --loglevel=error)

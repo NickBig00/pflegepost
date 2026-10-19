@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="de">
+  <body style="margin:0;padding:0;background:#F6F3ED;font-family:Inter,Helvetica,Arial,sans-serif;color:#1E2320;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F6F3ED;padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#ffffff;border-radius:16px;padding:32px 24px;">
+            <tr>
+              <td>
+                <p style="margin:0 0 8px;font-size:20px;font-weight:600;">Hallo!</p>
+                <p style="margin:0 0 24px;font-size:16px;line-height:24px;">
+                  Hier ist dein Code für Pflegepost. Gib ihn in der App ein:
+                </p>
+                <p style="margin:0 0 24px;font-size:32px;font-weight:700;letter-spacing:8px;text-align:center;">{{ .Token }}</p>
+                <p style="margin:0 0 16px;font-size:16px;line-height:24px;">
+                  Oder tippe auf dem Handy mit der App auf diesen Knopf:
+                </p>
+                <p style="margin:0 0 24px;text-align:center;">
+                  <a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#3A6650;color:#ffffff;text-decoration:none;font-size:16px;font-weight:600;padding:14px 24px;border-radius:12px;">In der App anmelden</a>
+                </p>
+                <p style="margin:0;font-size:14px;line-height:20px;color:#575F59;">
+                  Der Code gilt 15 Minuten. Wenn du dich nicht anmelden wolltest, kannst du diese E-Mail einfach ignorieren.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
