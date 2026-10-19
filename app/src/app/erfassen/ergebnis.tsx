@@ -46,7 +46,7 @@ export default function ResultScreen() {
   const { colors } = useTheme();
   const toast = useToast();
   const { careCase, currentUser, addDocument } = useDemo();
-  const { document, analysis } = useCapture();
+  const { letter, document, analysis } = useCapture();
   const deadline = analysis.deadline;
 
   const [choices, setChoices] = useState<Record<string, Choice>>(() =>
@@ -84,8 +84,9 @@ export default function ResultScreen() {
         dueDate: deadline && keepDeadline ? daysBefore(deadline.dueDate, t.daysBeforeDeadline) : null,
         assigneeId: choices[t.id]!.assigneeId,
         status: 'open',
+        completedAt: null,
       }));
-    addDocument(document, tasks);
+    addDocument(document, tasks, { letter, highlight: deadline?.sourceQuote });
     haptics.success();
     router.dismissTo('/');
     toast({

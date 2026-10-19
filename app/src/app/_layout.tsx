@@ -28,6 +28,9 @@ function Navigator() {
           name="erfassen"
           options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom' }}
         />
+        <Stack.Screen name="original/[id]" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="rueckblick" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="onboarding" options={{ animation: 'fade', gestureEnabled: false }} />
       </Stack>
     </>
   );
