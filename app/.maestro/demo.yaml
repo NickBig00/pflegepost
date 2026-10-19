@@ -1,0 +1,44 @@
+# End-to-end walk through the M0 demo. Not yet run (no simulator in the dev container).
+# appId is Expo Go; with a development build use its bundle id instead. Run:
+#   maestro test app/.maestro/demo.yaml
+appId: host.exp.exponent
+---
+- launchApp
+- assertVisible: 'Die Post für deine Eltern – gemeinsam im Griff.'
+- tapOn: 'Los geht’s'
+- tapOn: 'Dein Vorname'
+- inputText: 'Anna'
+- tapOn: 'Wie nennt ihr die Person?'
+- inputText: 'Mama'
+- hideKeyboard
+- tapOn: 'Weiter'
+- tapOn:
+    text: 'Ich bin einverstanden.*'
+- tapOn: 'Einverstanden, los geht’s'
+- assertVisible: 'Das steht an'
+
+# Capture a letter
+- tapOn: 'Brief erfassen'
+- assertVisible: 'Gut so – jetzt auslösen.'
+- tapOn: 'Foto aufnehmen'
+- assertVisible: 'Einen Moment…'
+- extendedWaitUntil:
+    visible: 'Was ist zu tun?'
+    timeout: 10000
+- assertVisible: 'Bis wann?'
+- tapOn:
+    text: '3 Aufgaben übernehmen'
+- assertVisible: 'Gespeichert. 3 Aufgaben stehen jetzt an.'
+
+# Tick off a task
+- tapOn: 'Aufgaben'
+- tapOn:
+    text: 'Pflegetagebuch.*als erledigt markieren'
+- assertVisible: 'Erledigt. Danke dir!'
+
+# Family and weekly review
+- tapOn: 'Familie'
+- assertVisible: 'Wer kümmert sich um was'
+- tapOn:
+    text: 'Euer Wochenrückblick.*'
+- assertVisible: 'Liebe Anna,'

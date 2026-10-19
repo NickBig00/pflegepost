@@ -32,11 +32,19 @@ npm run lint
 npm test
 ```
 
+## Ende-zu-Ende-Test
+
+`.maestro/demo.yaml` geht die ganze Demo durch (Onboarding, Brief erfassen, Aufgabe abhaken,
+Familie, Rückblick). Ausführen mit [Maestro](https://maestro.dev) auf Simulator oder Gerät:
+`maestro test .maestro/demo.yaml`
+
 ## Struktur
 
 - `src/app/` – Routen (Expo Router)
 - `src/ui/` – Designsystem: `tokens.ts` (Farben, Typo, Abstände, Bewegung), `theme.tsx` (hell/dunkel), `components/`
-- `src/lib/` – Logik ohne UI (z. B. Fristen)
+- `src/lib/` – Logik ohne UI (Fristen, Aufgaben, Lastverteilung, Rückblick)
+- `src/demo/` – erfundene Beispieldaten und Zod-Schemas (werden in M1 durch Supabase ersetzt)
+- `src/features/` – Bausteine einzelner Bereiche (Erfassen, Aufgaben, Dokumente, Onboarding)
 
 Farben werden nur über Tokens verwendet (`bg-surface`, `text-fg-muted` …). Die Klassen
 lösen über CSS-Variablen auf, die `ThemeProvider` aus `tokens.ts` setzt – dadurch braucht
