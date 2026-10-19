@@ -30,8 +30,7 @@ function PulseDot() {
   return (
     <View className="h-7 w-7 items-center justify-center rounded-full bg-primary-soft">
       <Animated.View
-        className="h-2.5 w-2.5 rounded-full"
-        style={[{ backgroundColor: colors.primary }, style]}
+        style={[{ width: 10, height: 10, borderRadius: 5, backgroundColor: colors.primary }, style]}
       />
     </View>
   );
@@ -43,8 +42,14 @@ function Marker({ state }: { state: StepState }) {
     return (
       <Animated.View
         entering={ZoomIn.duration(motion.base)}
-        className="h-7 w-7 items-center justify-center rounded-full"
-        style={{ backgroundColor: colors.primary }}
+        style={{
+          width: 28,
+          height: 28,
+          borderRadius: 14,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: colors.primary,
+        }}
       >
         <Icon icon={Check} size={16} color="onPrimary" strokeWidth={2.5} />
       </Animated.View>
@@ -63,7 +68,7 @@ export function ProgressSteps({ steps }: { steps: Step[] }) {
         <Animated.View
           key={step.label}
           entering={FadeIn.duration(motion.base)}
-          className="flex-row items-center gap-3.5"
+          style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}
         >
           <Marker state={step.state} />
           <Text

@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { FileUp, ScanLine, X } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
   FadeIn,
   useAnimatedStyle,
@@ -129,8 +129,7 @@ export default function CameraScreen() {
 
       <Animated.View
         pointerEvents="none"
-        className="absolute inset-0"
-        style={[{ backgroundColor: colors.onCamera }, flashStyle]}
+        style={[StyleSheet.absoluteFill, { backgroundColor: colors.onCamera }, flashStyle]}
       />
     </View>
   );

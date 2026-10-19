@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import { Modal, Pressable, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
   Easing,
@@ -9,10 +9,10 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemeScope, useTheme } from '../theme';
-import { motion } from '../tokens';
+import { motion, radius } from '../tokens';
 import { Text } from './Text';
 
 export type BottomSheetProps = {
@@ -67,13 +67,14 @@ export function BottomSheet({ visible, onClose, title, description, children }: 
     [translateY, onClose],
   );
 
-  const insets = useSafeAreaInsets();
   const { colors, shadows } = useTheme();
   const backdropStyle = useAnimatedStyle(() => ({ opacity: backdrop.get() * 0.45 }));
   const sheetStyle = useAnimatedStyle(() => ({ transform: [{ translateY: translateY.get() }] }));
 
   if (!mounted) return null;
 
+  // Animated views get plain styles only: class-based colours are dropped on
+  // animated views on device, which made the sheet transparent on Android.
   return (
     <Modal
       transparent
@@ -83,54 +84,81 @@ export function BottomSheet({ visible, onClose, title, description, children }: 
       onRequestClose={onClose}
       animationType="none"
     >
-      <ThemeScope>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <Animated.View
-            className="absolute inset-0"
-            style={[{ backgroundColor: colors.overlay }, backdropStyle]}
-          >
-            <Pressable
-              className="flex-1"
-              onPress={onClose}
-              accessibilityRole="button"
-              accessibilityLabel="Schließen"
-            />
-          </Animated.View>
-          <View className="flex-1 justify-end" pointerEvents="box-none">
+      {/* A Modal is its own window: it needs its own safe-area provider on Android. */}
+      <SafeAreaProvider>
+        <ThemeScope>
+          <GestureHandlerRootView style={{ flex: 1 }}>
             <Animated.View
-              accessibilityViewIsModal
-              className="w-full max-w-[640px] self-center rounded-t-xl"
-              style={[
-                sheetStyle,
-                {
-                  backgroundColor: colors.surfaceRaised,
-                  boxShadow: shadows.floating,
-                  paddingBottom: Math.max(insets.bottom, 16) + 8,
-                },
-              ]}
+              style={[StyleSheet.absoluteFill, { backgroundColor: colors.overlay }, backdropStyle]}
             >
-              <GestureDetector gesture={pan}>
-                <View className="items-center pb-2 pt-3">
-                  <View className="h-1.5 w-10 rounded-full bg-border-strong" />
-                </View>
-              </GestureDetector>
-              <View className="gap-5 px-5 pt-2">
-                {title || description ? (
-                  <View className="gap-1.5">
-                    {title ? <Text variant="title2">{title}</Text> : null}
-                    {description ? (
-                      <Text variant="callout" tone="muted">
-                        {description}
-                      </Text>
-                    ) : null}
-                  </View>
-                ) : null}
-                {children}
-              </View>
+              <Pressable
+                style={{ flex: 1 }}
+                onPress={onClose}
+                accessibilityRole="button"
+                accessibilityLabel="Schließen"
+              />
             </Animated.View>
-          </View>
-        </GestureHandlerRootView>
-      </ThemeScope>
+            <View style={{ flex: 1, justifyContent: 'flex-end' }} pointerEvents="box-none">
+              <Animated.View
+                accessibilityViewIsModal
+                style={[
+                  {
+                    width: '100%',
+                    maxWidth: 640,
+                    alignSelf: 'center',
+                    borderTopLeftRadius: radius.xl,
+                    borderTopRightRadius: radius.xl,
+                    backgroundColor: colors.surfaceRaised,
+                    boxShadow: shadows.floating,
+                  },
+                  sheetStyle,
+                ]}
+              >
+                <SheetContent pan={pan} title={title} description={description}>
+                  {children}
+                </SheetContent>
+              </Animated.View>
+            </View>
+          </GestureHandlerRootView>
+        </ThemeScope>
+      </SafeAreaProvider>
     </Modal>
+  );
+}
+
+function SheetContent({
+  pan,
+  title,
+  description,
+  children,
+}: {
+  pan: ReturnType<typeof Gesture.Pan>;
+  title?: string;
+  description?: string;
+  children: ReactNode;
+}) {
+  const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+  return (
+    <View style={{ paddingBottom: Math.max(insets.bottom, 16) + 12 }}>
+      <GestureDetector gesture={pan}>
+        <View style={{ alignItems: 'center', paddingTop: 12, paddingBottom: 8 }}>
+          <View style={{ width: 40, height: 6, borderRadius: 3, backgroundColor: colors.borderStrong }} />
+        </View>
+      </GestureDetector>
+      <View style={{ gap: 20, paddingHorizontal: 20, paddingTop: 8 }}>
+        {title || description ? (
+          <View style={{ gap: 6 }}>
+            {title ? <Text variant="title2">{title}</Text> : null}
+            {description ? (
+              <Text variant="callout" tone="muted">
+                {description}
+              </Text>
+            ) : null}
+          </View>
+        ) : null}
+        {children}
+      </View>
+    </View>
   );
 }

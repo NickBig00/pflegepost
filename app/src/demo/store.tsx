@@ -82,7 +82,13 @@ export function DemoProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<DemoState>(() => {
     const careCase: CareCase = profile
-      ? { ...initial.careCase, displayName: profile.caseName, legalBasis: profile.legalBasis }
+      ? {
+          ...initial.careCase,
+          // The demo's real name (Ingrid Weber) would not match the person the user named.
+          displayName: profile.caseName,
+          fullName: profile.caseName,
+          legalBasis: profile.legalBasis,
+        }
       : initial.careCase;
     const members = careCase.members.map((m) =>
       m.id === CURRENT_USER_ID && profile ? { ...m, displayName: profile.firstName } : m,

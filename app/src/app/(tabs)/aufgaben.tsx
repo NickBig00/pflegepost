@@ -74,7 +74,7 @@ export default function TasksScreen() {
             key={`${filter}-${g.key}`}
             layout={layout}
             entering={FadeIn.duration(motion.base)}
-            className="gap-3"
+            style={{ gap: 12 }}
           >
             {filter !== 'done' || groups.length > 1 ? (
               <Text variant="eyebrow" tone="subtle">

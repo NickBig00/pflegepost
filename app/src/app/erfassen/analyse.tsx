@@ -45,8 +45,19 @@ function ScanLine() {
   return (
     <Animated.View
       pointerEvents="none"
-      className="absolute inset-x-0 top-0 h-1.5 rounded-full"
-      style={[{ backgroundColor: colors.primary, opacity: 0.45 }, style]}
+      style={[
+        {
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 0,
+          height: 6,
+          borderRadius: 3,
+          backgroundColor: colors.primary,
+          opacity: 0.45,
+        },
+        style,
+      ]}
     />
   );
 }

@@ -62,8 +62,14 @@ function DoneCheck({ done, title, onToggle }: { done: boolean; title: string; on
       {done ? (
         <Animated.View
           entering={ZoomIn.duration(motion.fast)}
-          className="h-8 w-8 items-center justify-center rounded-full"
-          style={{ backgroundColor: colors.primary }}
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: 16,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: colors.primary,
+          }}
         >
           <Icon icon={Check} size={18} color="onPrimary" strokeWidth={2.75} />
         </Animated.View>

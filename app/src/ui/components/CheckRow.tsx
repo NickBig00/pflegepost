@@ -5,7 +5,7 @@ import Animated, { ZoomIn } from 'react-native-reanimated';
 
 import { haptics } from '../haptics';
 import { useTheme } from '../theme';
-import { motion } from '../tokens';
+import { motion, radius } from '../tokens';
 import { Icon } from './Icon';
 import { Text } from './Text';
 
@@ -40,8 +40,14 @@ export function CheckRow({ label, description, checked, onToggle, children }: Ch
           {checked ? (
             <Animated.View
               entering={ZoomIn.duration(motion.fast)}
-              className="h-7 w-7 items-center justify-center rounded-md"
-              style={{ backgroundColor: colors.primary }}
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: radius.md,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: colors.primary,
+              }}
             >
               <Icon icon={Check} size={18} color="onPrimary" strokeWidth={2.75} />
             </Animated.View>

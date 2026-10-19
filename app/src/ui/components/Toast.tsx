@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { haptics } from '../haptics';
 import { useTheme } from '../theme';
-import { motion } from '../tokens';
+import { motion, radius } from '../tokens';
 import { Icon } from './Icon';
 import { Text } from './Text';
 
@@ -85,8 +85,17 @@ function ToastView({
     <Animated.View
       entering={FadeInDown.duration(motion.base)}
       exiting={FadeOutDown.duration(motion.fast)}
-      className="mx-4 w-auto max-w-[560px] flex-row items-center gap-3 self-center rounded-lg py-3 pl-4 pr-2"
       style={{
+        marginHorizontal: 16,
+        maxWidth: 560,
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
+        borderRadius: radius.lg,
+        paddingVertical: 12,
+        paddingLeft: 16,
+        paddingRight: 8,
         marginBottom: bottomOffset + insets.bottom + 16,
         backgroundColor: colors.fg,
         boxShadow: shadows.floating,

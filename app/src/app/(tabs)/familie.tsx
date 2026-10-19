@@ -122,7 +122,7 @@ export default function FamilyScreen() {
             ))}
             <ListItem
               title={careCase.fullName}
-              subtitle={`Für ${careCase.displayName} kümmert ihr euch gemeinsam`}
+              subtitle="Um sie oder ihn kümmert ihr euch gemeinsam"
               leading={
                 <IconTile tone="accent">
                   <Icon icon={HeartHandshake} size={20} color="onAccentSoft" />

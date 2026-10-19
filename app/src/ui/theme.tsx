@@ -2,8 +2,6 @@ import { createContext, useContext, useMemo, useState, type ReactNode } from 're
 import { useColorScheme, View } from 'react-native';
 import { vars } from 'nativewind';
 
-import './interop';
-
 import { hexToRgb } from './contrast';
 import { colors, shadows, type ColorScheme, type ColorToken } from './tokens';
 
