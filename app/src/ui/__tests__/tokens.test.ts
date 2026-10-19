@@ -40,6 +40,14 @@ describe.each(schemes)('color tokens (%s)', (scheme) => {
     expect(contrastRatio(c.onPrimary, c.primaryPressed)).toBeGreaterThanOrEqual(AA);
   });
 
+  test('camera and paper text meet WCAG AA', () => {
+    expect(contrastRatio(c.onCamera, c.camera)).toBeGreaterThanOrEqual(AA);
+    for (const bg of [c.paper, c.paperHighlight]) {
+      expect(contrastRatio(c.paperInk, bg)).toBeGreaterThanOrEqual(AA);
+      expect(contrastRatio(c.paperInkMuted, bg)).toBeGreaterThanOrEqual(AA);
+    }
+  });
+
   test('inverted toast text meets WCAG AA', () => {
     expect(contrastRatio(c.canvas, c.fg)).toBeGreaterThanOrEqual(AA);
     expect(contrastRatio(c.primarySoft, c.fg)).toBeGreaterThanOrEqual(AA);

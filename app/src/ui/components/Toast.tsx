@@ -23,21 +23,14 @@ export type ToastOptions = {
 type ToastState = ToastOptions & { id: number };
 
 const ToastContext = createContext<((options: ToastOptions) => void) | null>(null);
+const InsetContext = createContext<((inset: number) => void) | null>(null);
 
 const DURATION = 3500;
 
-/**
- * Shows toasts at the bottom. Nest another provider with `bottomOffset` where
- * a tab bar would otherwise be covered.
- */
-export function ToastProvider({
-  children,
-  bottomOffset = 0,
-}: {
-  children: ReactNode;
-  bottomOffset?: number;
-}) {
+/** Shows toasts at the bottom, above a tab bar when one registers its height. */
+export function ToastProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<ToastState | null>(null);
+  const [bottomOffset, setBottomOffset] = useState(0);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const nextId = useRef(0);
 
@@ -59,7 +52,7 @@ export function ToastProvider({
 
   return (
     <ToastContext.Provider value={show}>
-      {children}
+      <InsetContext.Provider value={setBottomOffset}>{children}</InsetContext.Provider>
       <View pointerEvents="box-none" className="absolute inset-x-0 bottom-0">
         {toast ? (
           <ToastView
@@ -123,6 +116,15 @@ function ToastView({
       )}
     </Animated.View>
   );
+}
+
+/** Keeps toasts above a bar of `inset` points while the caller is mounted. */
+export function useToastBottomInset(inset: number) {
+  const setInset = useContext(InsetContext);
+  useEffect(() => {
+    setInset?.(inset);
+    return () => setInset?.(0);
+  }, [inset, setInset]);
 }
 
 export function useToast() {

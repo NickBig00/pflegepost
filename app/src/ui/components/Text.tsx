@@ -21,7 +21,10 @@ export type TextTone =
   | 'onDangerSoft'
   /** On inverted surfaces (bg-fg), e.g. toasts. */
   | 'inverse'
-  | 'inverseAction';
+  | 'inverseAction'
+  | 'onCamera'
+  | 'paperInk'
+  | 'paperInkMuted';
 
 const toneClass: Record<TextTone, string> = {
   default: 'text-fg',
@@ -42,6 +45,9 @@ const toneClass: Record<TextTone, string> = {
   onDangerSoft: 'text-on-danger-soft',
   inverse: 'text-canvas',
   inverseAction: 'text-primary-soft',
+  onCamera: 'text-on-camera',
+  paperInk: 'text-paper-ink',
+  paperInkMuted: 'text-paper-ink-muted',
 };
 
 export type TextProps = RNTextProps & {

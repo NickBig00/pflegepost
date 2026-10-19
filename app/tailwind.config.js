@@ -32,6 +32,14 @@ const colorTokens = [
   'on-danger-soft',
   'overlay',
   'focus',
+  'camera',
+  'on-camera',
+  'paper',
+  'paper-ink',
+  'paper-ink-muted',
+  'paper-line',
+  'paper-highlight',
+  'paper-accent',
 ];
 
 /** @type {import('tailwindcss').Config} */

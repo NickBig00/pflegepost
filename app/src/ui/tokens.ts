@@ -53,6 +53,18 @@ const light = {
 
   overlay: '#1E2320',
   focus: '#3D6683',
+
+  // Camera: always dark, like the system camera
+  camera: '#111412',
+  onCamera: '#F6F3ED',
+
+  // Paper: how a scanned letter looks, in both schemes
+  paper: '#FFFFFF',
+  paperInk: '#1E2320',
+  paperInkMuted: '#575F59',
+  paperLine: '#E5DFD4',
+  paperHighlight: '#F7E2C6',
+  paperAccent: '#3A6650',
 } as const;
 
 export type ColorToken = keyof typeof light;
@@ -97,6 +109,17 @@ const dark: Record<ColorToken, string> = {
 
   overlay: '#000000',
   focus: '#9DBEDA',
+
+  camera: '#0B0D0C',
+  onCamera: '#F6F3ED',
+
+  // Slightly dimmed so a white page does not glare in dark mode
+  paper: '#E9E5DD',
+  paperInk: '#1E2320',
+  paperInkMuted: '#525A54',
+  paperLine: '#D3CCBF',
+  paperHighlight: '#EBCB9E',
+  paperAccent: '#3A6650',
 };
 
 export const colors: Record<ColorScheme, Record<ColorToken, string>> = { light, dark };
