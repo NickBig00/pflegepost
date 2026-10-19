@@ -1,6 +1,6 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Modal, Pressable, View } from 'react-native';
-import { GestureDetector, GestureHandlerRootView, usePanGesture } from 'react-native-gesture-handler';
+import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
   Easing,
   runOnJS,
@@ -50,22 +50,25 @@ export function BottomSheet({ visible, onClose, title, description, children }: 
     }
   }, [visible, mounted, backdrop, translateY]);
 
-  const pan = usePanGesture({
-    activeOffsetY: 8,
-    onUpdate: (e) => {
-      'worklet';
-      translateY.set(Math.max(0, e.translationY));
-    },
-    onDeactivate: (e) => {
-      'worklet';
-      if (e.translationY > DISMISS_DISTANCE || e.velocityY > 900) {
-        runOnJS(onClose)();
-      } else {
-        translateY.set(withSpring(0, motion.spring));
-      }
-    },
-  });
+  const pan = useMemo(
+    () =>
+      Gesture.Pan()
+        .activeOffsetY(8)
+        .onUpdate((e) => {
+          translateY.set(Math.max(0, e.translationY));
+        })
+        .onEnd((e) => {
+          if (e.translationY > DISMISS_DISTANCE || e.velocityY > 900) {
+            runOnJS(onClose)();
+          } else {
+            translateY.set(withSpring(0, motion.spring));
+          }
+        }),
+    [translateY, onClose],
+  );
 
+  const insets = useSafeAreaInsets();
+  const { shadows } = useTheme();
   const backdropStyle = useAnimatedStyle(() => ({ opacity: backdrop.get() * 0.45 }));
   const sheetStyle = useAnimatedStyle(() => ({ transform: [{ translateY: translateY.get() }] }));
 
@@ -91,55 +94,36 @@ export function BottomSheet({ visible, onClose, title, description, children }: 
             />
           </Animated.View>
           <View className="flex-1 justify-end" pointerEvents="box-none">
-            <SheetBody title={title} description={description} sheetStyle={sheetStyle} pan={pan}>
-              {children}
-            </SheetBody>
+            <Animated.View
+              accessibilityViewIsModal
+              className="w-full max-w-[640px] self-center rounded-t-xl bg-surface-raised"
+              style={[
+                sheetStyle,
+                { boxShadow: shadows.floating, paddingBottom: Math.max(insets.bottom, 16) + 8 },
+              ]}
+            >
+              <GestureDetector gesture={pan}>
+                <View className="items-center pb-2 pt-3">
+                  <View className="h-1.5 w-10 rounded-full bg-border-strong" />
+                </View>
+              </GestureDetector>
+              <View className="gap-5 px-5 pt-2">
+                {title || description ? (
+                  <View className="gap-1.5">
+                    {title ? <Text variant="title2">{title}</Text> : null}
+                    {description ? (
+                      <Text variant="callout" tone="muted">
+                        {description}
+                      </Text>
+                    ) : null}
+                  </View>
+                ) : null}
+                {children}
+              </View>
+            </Animated.View>
           </View>
         </GestureHandlerRootView>
       </ThemeScope>
     </Modal>
-  );
-}
-
-function SheetBody({
-  title,
-  description,
-  sheetStyle,
-  pan,
-  children,
-}: {
-  title?: string;
-  description?: string;
-  sheetStyle: ReturnType<typeof useAnimatedStyle>;
-  pan: ReturnType<typeof usePanGesture>;
-  children: ReactNode;
-}) {
-  const insets = useSafeAreaInsets();
-  const { shadows } = useTheme();
-  return (
-    <Animated.View
-      accessibilityViewIsModal
-      className="w-full max-w-[640px] self-center rounded-t-xl bg-surface-raised"
-      style={[sheetStyle, { boxShadow: shadows.floating, paddingBottom: Math.max(insets.bottom, 16) + 8 }]}
-    >
-      <GestureDetector gesture={pan}>
-        <View className="items-center pb-2 pt-3">
-          <View className="h-1.5 w-10 rounded-full bg-border-strong" />
-        </View>
-      </GestureDetector>
-      <View className="gap-5 px-5 pt-2">
-        {title || description ? (
-          <View className="gap-1.5">
-            {title ? <Text variant="title2">{title}</Text> : null}
-            {description ? (
-              <Text variant="callout" tone="muted">
-                {description}
-              </Text>
-            ) : null}
-          </View>
-        ) : null}
-        {children}
-      </View>
-    </Animated.View>
   );
 }
