@@ -11,10 +11,14 @@ export const memberSchema = z.object({
   role: z.enum(['owner', 'member', 'viewer']),
 });
 
+/** Basis for processing the cared-for person's data (asked in onboarding, see COMPLIANCE.md). */
+export const legalBasisSchema = z.enum(['consent', 'power_of_attorney', 'legal_guardian', 'unknown']);
+
 export const careCaseSchema = z.object({
   id: z.string(),
   displayName: z.string().min(1),
   fullName: z.string().min(1),
+  legalBasis: legalBasisSchema.nullable(),
   members: z.array(memberSchema).min(1),
 });
 
@@ -44,6 +48,7 @@ export const taskSchema = z.object({
   dueDate: isoDay.nullable(),
   assigneeId: z.string().nullable(),
   status: z.enum(['open', 'in_progress', 'done']),
+  completedAt: isoDay.nullable(),
 });
 
 /** Result of reading a letter (document_analysis + deadlines + task suggestions). */
@@ -71,6 +76,7 @@ export const analysisSchema = z.object({
 });
 
 export type Analysis = z.infer<typeof analysisSchema>;
+export type LegalBasis = z.infer<typeof legalBasisSchema>;
 export type Member = z.infer<typeof memberSchema>;
 export type CareCase = z.infer<typeof careCaseSchema>;
 export type SenderType = z.infer<typeof senderTypeSchema>;

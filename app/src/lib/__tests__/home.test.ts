@@ -2,6 +2,7 @@ import type { Task } from '@/demo/schemas';
 
 import { isoInDays, receivedLabel } from '../dates';
 import { firstName, greeting } from '../greeting';
+import { genitive, personalize } from '../personalize';
 import { upcomingTasks } from '../tasks';
 
 test.each([
@@ -39,6 +40,7 @@ const task = (id: string, dueDate: string | null, status: Task['status'] = 'open
   dueDate,
   assigneeId: null,
   status,
+  completedAt: null,
 });
 
 test('upcomingTasks sorts by deadline, skips done tasks and puts undated last', () => {
@@ -50,4 +52,17 @@ test('upcomingTasks sorts by deadline, skips done tasks and puts undated last', 
   ];
   expect(upcomingTasks(tasks).map((t) => t.id)).toEqual(['b', 'a', 'c']);
   expect(upcomingTasks(tasks, 2).map((t) => t.id)).toEqual(['b', 'a']);
+});
+
+describe('personalize', () => {
+  test('genitive', () => {
+    expect(genitive('Papa')).toBe('Papas');
+    expect(genitive('Opa Klaus')).toBe('Opa Klaus’');
+  });
+  test('replaces Mama and Mamas', () => {
+    expect(personalize('Mamas Antrag, damit Mama Hilfe bekommt', 'Papa')).toBe(
+      'Papas Antrag, damit Papa Hilfe bekommt',
+    );
+    expect(personalize('Mama', 'Mama')).toBe('Mama');
+  });
 });

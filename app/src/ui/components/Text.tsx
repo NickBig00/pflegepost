@@ -1,6 +1,7 @@
 import { Text as RNText, type TextProps as RNTextProps } from 'react-native';
 
-import { fontFamily, typography, type TypographyToken } from '../tokens';
+import { useTheme } from '../theme';
+import { fontFamily, typography, type ColorToken, type TypographyToken } from '../tokens';
 
 export type TextTone =
   | 'default'
@@ -26,28 +27,30 @@ export type TextTone =
   | 'paperInk'
   | 'paperInkMuted';
 
-const toneClass: Record<TextTone, string> = {
-  default: 'text-fg',
-  muted: 'text-fg-muted',
-  subtle: 'text-fg-subtle',
-  primary: 'text-primary',
-  onPrimary: 'text-on-primary',
-  accent: 'text-accent',
-  ochre: 'text-ochre',
-  info: 'text-info',
-  success: 'text-success',
-  danger: 'text-danger',
-  onPrimarySoft: 'text-on-primary-soft',
-  onAccentSoft: 'text-on-accent-soft',
-  onOchreSoft: 'text-on-ochre-soft',
-  onInfoSoft: 'text-on-info-soft',
-  onSuccessSoft: 'text-on-success-soft',
-  onDangerSoft: 'text-on-danger-soft',
-  inverse: 'text-canvas',
-  inverseAction: 'text-primary-soft',
-  onCamera: 'text-on-camera',
-  paperInk: 'text-paper-ink',
-  paperInkMuted: 'text-paper-ink-muted',
+// Colors come from the theme via style, not classes: class-based colors did not
+// update reliably when a tone changes at runtime (e.g. toggled chips).
+const toneColor: Record<TextTone, ColorToken> = {
+  default: 'fg',
+  muted: 'fgMuted',
+  subtle: 'fgSubtle',
+  primary: 'primary',
+  onPrimary: 'onPrimary',
+  accent: 'accent',
+  ochre: 'ochre',
+  info: 'info',
+  success: 'success',
+  danger: 'danger',
+  onPrimarySoft: 'onPrimarySoft',
+  onAccentSoft: 'onAccentSoft',
+  onOchreSoft: 'onOchreSoft',
+  onInfoSoft: 'onInfoSoft',
+  onSuccessSoft: 'onSuccessSoft',
+  onDangerSoft: 'onDangerSoft',
+  inverse: 'canvas',
+  inverseAction: 'primarySoft',
+  onCamera: 'onCamera',
+  paperInk: 'paperInk',
+  paperInkMuted: 'paperInkMuted',
 };
 
 export type TextProps = RNTextProps & {
@@ -60,17 +63,19 @@ const headingVariants: TypographyToken[] = ['display', 'title1', 'title2', 'titl
 
 export function Text({ variant = 'body', tone = 'default', className = '', style, ...rest }: TextProps) {
   const t = typography[variant];
+  const { colors } = useTheme();
   return (
     <RNText
       accessibilityRole={headingVariants.includes(variant) ? 'header' : undefined}
       maxFontSizeMultiplier={t.maxScale}
-      className={`${toneClass[tone]} ${className}`}
+      className={className}
       style={[
         {
           fontFamily: fontFamily[t.weight],
           fontSize: t.size,
           lineHeight: t.lineHeight,
           letterSpacing: t.letterSpacing,
+          color: colors[toneColor[tone]],
         },
         variant === 'eyebrow' && { textTransform: 'uppercase' },
         style,

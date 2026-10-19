@@ -19,6 +19,8 @@ export { ProgressSteps, type Step } from './components/ProgressSteps';
 export { Screen } from './components/Screen';
 export { SectionHeader } from './components/SectionHeader';
 export { SegmentedControl } from './components/SegmentedControl';
+export { ShareBar, type ShareSegment } from './components/ShareBar';
+export { StepDots } from './components/StepDots';
 export { TaskCard, type TaskTone } from './components/TaskCard';
 export { Text } from './components/Text';
 export { TextField } from './components/TextField';
