@@ -59,7 +59,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
 function ToastView({ toast, onDismiss }: { toast: ToastState; onDismiss: () => void }) {
   const insets = useSafeAreaInsets();
-  const { shadows } = useTheme();
+  const { colors, shadows } = useTheme();
   const tone = toast.tone ?? 'success';
   const icon = toast.icon ?? (tone === 'success' ? CircleCheck : Info);
 
@@ -67,8 +67,8 @@ function ToastView({ toast, onDismiss }: { toast: ToastState; onDismiss: () => v
     <Animated.View
       entering={FadeInDown.duration(motion.base)}
       exiting={FadeOutDown.duration(motion.fast)}
-      className="mx-4 w-auto max-w-[560px] flex-row items-center gap-3 self-center rounded-lg bg-fg py-3 pl-4 pr-2"
-      style={{ marginBottom: insets.bottom + 16, boxShadow: shadows.floating }}
+      className="mx-4 w-auto max-w-[560px] flex-row items-center gap-3 self-center rounded-lg py-3 pl-4 pr-2"
+      style={{ marginBottom: insets.bottom + 16, backgroundColor: colors.fg, boxShadow: shadows.floating }}
       accessibilityLiveRegion="polite"
     >
       <Icon icon={icon} size={20} color={tone === 'success' ? 'primarySoft' : 'infoSoft'} strokeWidth={2} />

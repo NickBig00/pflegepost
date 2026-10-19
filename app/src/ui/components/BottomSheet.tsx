@@ -68,7 +68,7 @@ export function BottomSheet({ visible, onClose, title, description, children }: 
   );
 
   const insets = useSafeAreaInsets();
-  const { shadows } = useTheme();
+  const { colors, shadows } = useTheme();
   const backdropStyle = useAnimatedStyle(() => ({ opacity: backdrop.get() * 0.45 }));
   const sheetStyle = useAnimatedStyle(() => ({ transform: [{ translateY: translateY.get() }] }));
 
@@ -85,7 +85,10 @@ export function BottomSheet({ visible, onClose, title, description, children }: 
     >
       <ThemeScope>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <Animated.View className="absolute inset-0 bg-overlay" style={backdropStyle}>
+          <Animated.View
+            className="absolute inset-0"
+            style={[{ backgroundColor: colors.overlay }, backdropStyle]}
+          >
             <Pressable
               className="flex-1"
               onPress={onClose}
@@ -96,10 +99,14 @@ export function BottomSheet({ visible, onClose, title, description, children }: 
           <View className="flex-1 justify-end" pointerEvents="box-none">
             <Animated.View
               accessibilityViewIsModal
-              className="w-full max-w-[640px] self-center rounded-t-xl bg-surface-raised"
+              className="w-full max-w-[640px] self-center rounded-t-xl"
               style={[
                 sheetStyle,
-                { boxShadow: shadows.floating, paddingBottom: Math.max(insets.bottom, 16) + 8 },
+                {
+                  backgroundColor: colors.surfaceRaised,
+                  boxShadow: shadows.floating,
+                  paddingBottom: Math.max(insets.bottom, 16) + 8,
+                },
               ]}
             >
               <GestureDetector gesture={pan}>

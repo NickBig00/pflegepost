@@ -11,6 +11,7 @@ import Animated, {
   ZoomIn,
 } from 'react-native-reanimated';
 
+import { useTheme } from '../theme';
 import { motion } from '../tokens';
 import { Icon } from './Icon';
 import { Text } from './Text';
@@ -19,6 +20,7 @@ export type StepState = 'pending' | 'active' | 'done';
 export type Step = { label: string; state: StepState };
 
 function PulseDot() {
+  const { colors } = useTheme();
   const reduceMotion = useReducedMotion();
   const opacity = useSharedValue(1);
   useEffect(() => {
@@ -27,17 +29,22 @@ function PulseDot() {
   const style = useAnimatedStyle(() => ({ opacity: opacity.get() }));
   return (
     <View className="h-7 w-7 items-center justify-center rounded-full bg-primary-soft">
-      <Animated.View className="h-2.5 w-2.5 rounded-full bg-primary" style={style} />
+      <Animated.View
+        className="h-2.5 w-2.5 rounded-full"
+        style={[{ backgroundColor: colors.primary }, style]}
+      />
     </View>
   );
 }
 
 function Marker({ state }: { state: StepState }) {
+  const { colors } = useTheme();
   if (state === 'done') {
     return (
       <Animated.View
         entering={ZoomIn.duration(motion.base)}
-        className="h-7 w-7 items-center justify-center rounded-full bg-primary"
+        className="h-7 w-7 items-center justify-center rounded-full"
+        style={{ backgroundColor: colors.primary }}
       >
         <Icon icon={Check} size={16} color="onPrimary" strokeWidth={2.5} />
       </Animated.View>
