@@ -48,3 +48,17 @@ export function deadlineLabel(isoDay: string, today: Date = new Date()): string 
   if (days <= 7) return `In ${days} Tagen`;
   return `Bis ${formatShortDate(isoDay)}`;
 }
+
+/** ISO calendar day `days` from `from` (local time). */
+export function isoInDays(days: number, from: Date = new Date()): string {
+  const d = new Date(from.getFullYear(), from.getMonth(), from.getDate() + days);
+  return [d.getFullYear(), d.getMonth() + 1, d.getDate()].map((n) => String(n).padStart(2, '0')).join('-');
+}
+
+/** "Heute", "Gestern" or "14. Okt." for when a letter arrived. */
+export function receivedLabel(isoDay: string, today: Date = new Date()): string {
+  const days = daysUntil(isoDay, today);
+  if (days === 0) return 'Heute';
+  if (days === -1) return 'Gestern';
+  return formatShortDate(isoDay);
+}
