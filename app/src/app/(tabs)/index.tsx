@@ -38,8 +38,9 @@ export default function HomeScreen() {
   const upcoming = upcomingTasks(tasks, 3);
   const latest = [...documents].sort((a, b) => b.receivedOn.localeCompare(a.receivedOn))[0];
 
-  // Capture flows follow in the next demo steps.
-  const comingNext = () => toast({ message: 'Das zeigen wir im nächsten Schritt der Demo.', tone: 'info' });
+  // Voice notes follow in a later demo step.
+  const voiceComingNext = () =>
+    toast({ message: 'Sprachnotizen zeigen wir in einem späteren Schritt.', tone: 'info' });
 
   return (
     <Screen
@@ -52,7 +53,7 @@ export default function HomeScreen() {
           icon={Camera}
           title="Brief erfassen"
           subtitle="Foto oder PDF – ich erkläre ihn dir"
-          onPress={comingNext}
+          onPress={() => router.push('/erfassen')}
         />
         <Button
           label="Sprachnotiz aufnehmen"
@@ -60,7 +61,7 @@ export default function HomeScreen() {
           variant="secondary"
           size="lg"
           align="stretch"
-          onPress={comingNext}
+          onPress={voiceComingNext}
         />
       </View>
 

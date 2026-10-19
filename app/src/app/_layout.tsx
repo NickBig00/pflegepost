@@ -23,7 +23,12 @@ function Navigator() {
   return (
     <>
       <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.canvas } }} />
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.canvas } }}>
+        <Stack.Screen
+          name="erfassen"
+          options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom' }}
+        />
+      </Stack>
     </>
   );
 }

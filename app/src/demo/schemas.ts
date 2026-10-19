@@ -46,6 +46,31 @@ export const taskSchema = z.object({
   status: z.enum(['open', 'in_progress', 'done']),
 });
 
+/** Result of reading a letter (document_analysis + deadlines + task suggestions). */
+export const analysisSchema = z.object({
+  referenceNumber: z.string().nullable(),
+  letterDate: isoDay,
+  pageCount: z.number().int().positive(),
+  summaryPlain: z.string().min(1),
+  deadline: z
+    .object({
+      dueDate: isoDay,
+      /** Verbatim sentence from the letter; a deadline without a quote is shown as uncertain. */
+      sourceQuote: z.string().min(1),
+      page: z.number().int().positive(),
+    })
+    .nullable(),
+  suggestedTasks: z.array(
+    z.object({
+      id: z.string(),
+      title: z.string().min(1),
+      /** Suggested due date relative to the deadline (0 = on the deadline). */
+      daysBeforeDeadline: z.number().int().nonnegative(),
+    }),
+  ),
+});
+
+export type Analysis = z.infer<typeof analysisSchema>;
 export type Member = z.infer<typeof memberSchema>;
 export type CareCase = z.infer<typeof careCaseSchema>;
 export type SenderType = z.infer<typeof senderTypeSchema>;

@@ -12,6 +12,8 @@ type DemoState = {
   documentById: (id: string | null) => CareDocument | undefined;
   /** Assign a task to someone, or unassign with null. */
   assignTask: (taskId: string, memberId: string | null) => void;
+  /** Save a confirmed letter together with the tasks the user accepted. */
+  addDocument: (document: CareDocument, tasks: Task[]) => void;
 };
 
 const DemoContext = createContext<DemoState | null>(null);
@@ -20,13 +22,19 @@ const DemoContext = createContext<DemoState | null>(null);
 export function DemoProvider({ children }: { children: ReactNode }) {
   const [initial] = useState(() => createDemoData());
   const [tasks, setTasks] = useState(initial.tasks);
+  const [documents, setDocuments] = useState(initial.documents);
 
   const assignTask = useCallback((taskId: string, memberId: string | null) => {
     setTasks((all) => all.map((t) => (t.id === taskId ? { ...t, assigneeId: memberId } : t)));
   }, []);
 
+  const addDocument = useCallback((document: CareDocument, newTasks: Task[]) => {
+    setDocuments((all) => [document, ...all.filter((d) => d.id !== document.id)]);
+    setTasks((all) => [...all.filter((t) => t.documentId !== document.id), ...newTasks]);
+  }, []);
+
   const value = useMemo<DemoState>(() => {
-    const { careCase, documents } = initial;
+    const { careCase } = initial;
     const memberById = (id: string | null) => careCase.members.find((m) => m.id === id);
     return {
       careCase,
@@ -36,8 +44,9 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       memberById,
       documentById: (id) => documents.find((d) => d.id === id),
       assignTask,
+      addDocument,
     };
-  }, [initial, tasks, assignTask]);
+  }, [initial, documents, tasks, assignTask, addDocument]);
 
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>;
 }
