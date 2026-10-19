@@ -13,6 +13,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { DemoProvider } from '@/demo/store';
 import { ThemeProvider, ToastProvider, useTheme } from '@/ui';
 
 SplashScreen.preventAutoHideAsync();
@@ -44,9 +45,11 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
-        <ToastProvider>
-          <Navigator />
-        </ToastProvider>
+        <DemoProvider>
+          <ToastProvider>
+            <Navigator />
+          </ToastProvider>
+        </DemoProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );

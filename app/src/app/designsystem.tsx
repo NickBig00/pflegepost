@@ -38,14 +38,9 @@ import {
   type ColorToken,
   type Step,
 } from '@/ui';
+import { isoInDays } from '@/lib/dates';
 
 // Developer showcase of the design system. Not part of the user-facing navigation.
-
-function isoInDays(days: number): string {
-  const d = new Date();
-  d.setDate(d.getDate() + days);
-  return [d.getFullYear(), d.getMonth() + 1, d.getDate()].map((n) => String(n).padStart(2, '0')).join('-');
-}
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (

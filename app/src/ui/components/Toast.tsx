@@ -26,7 +26,17 @@ const ToastContext = createContext<((options: ToastOptions) => void) | null>(nul
 
 const DURATION = 3500;
 
-export function ToastProvider({ children }: { children: ReactNode }) {
+/**
+ * Shows toasts at the bottom. Nest another provider with `bottomOffset` where
+ * a tab bar would otherwise be covered.
+ */
+export function ToastProvider({
+  children,
+  bottomOffset = 0,
+}: {
+  children: ReactNode;
+  bottomOffset?: number;
+}) {
   const [toast, setToast] = useState<ToastState | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const nextId = useRef(0);
@@ -51,13 +61,28 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     <ToastContext.Provider value={show}>
       {children}
       <View pointerEvents="box-none" className="absolute inset-x-0 bottom-0">
-        {toast ? <ToastView key={toast.id} toast={toast} onDismiss={() => setToast(null)} /> : null}
+        {toast ? (
+          <ToastView
+            key={toast.id}
+            toast={toast}
+            bottomOffset={bottomOffset}
+            onDismiss={() => setToast(null)}
+          />
+        ) : null}
       </View>
     </ToastContext.Provider>
   );
 }
 
-function ToastView({ toast, onDismiss }: { toast: ToastState; onDismiss: () => void }) {
+function ToastView({
+  toast,
+  bottomOffset,
+  onDismiss,
+}: {
+  toast: ToastState;
+  bottomOffset: number;
+  onDismiss: () => void;
+}) {
   const insets = useSafeAreaInsets();
   const { colors, shadows } = useTheme();
   const tone = toast.tone ?? 'success';
@@ -68,7 +93,11 @@ function ToastView({ toast, onDismiss }: { toast: ToastState; onDismiss: () => v
       entering={FadeInDown.duration(motion.base)}
       exiting={FadeOutDown.duration(motion.fast)}
       className="mx-4 w-auto max-w-[560px] flex-row items-center gap-3 self-center rounded-lg py-3 pl-4 pr-2"
-      style={{ marginBottom: insets.bottom + 16, backgroundColor: colors.fg, boxShadow: shadows.floating }}
+      style={{
+        marginBottom: bottomOffset + insets.bottom + 16,
+        backgroundColor: colors.fg,
+        boxShadow: shadows.floating,
+      }}
       accessibilityLiveRegion="polite"
     >
       <Icon icon={icon} size={20} color={tone === 'success' ? 'primarySoft' : 'infoSoft'} strokeWidth={2} />

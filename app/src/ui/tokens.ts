@@ -179,5 +179,8 @@ export const motion = {
   spring: { damping: 22, stiffness: 260, mass: 0.9 },
 } as const;
 
+/** Tab bar height above the bottom safe area (pt). */
+export const tabBarHeight = 68;
+
 /** Minimum touch target (pt), WCAG 2.2 / HIG. */
 export const minTouch = 44;
