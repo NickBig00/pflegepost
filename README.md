@@ -2,6 +2,7 @@
 
 Eine App, mit der erwachsene Kinder den Papierkram ihrer pflegebedürftigen Eltern gemeinsam erledigen.
 Produkt, Design und Architektur: siehe [`CLAUDE.md`](CLAUDE.md) und [`docs/`](docs).
+Aktueller Stand und nächste Schritte: [`docs/STATUS.md`](docs/STATUS.md) · [`docs/M1_PLAN.md`](docs/M1_PLAN.md)
 
 | Ordner | Inhalt |
 |---|---|

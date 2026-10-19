@@ -40,6 +40,11 @@ Berufstätige Erwachsene (ca. 35–60), die sich mit Geschwistern oder Partnern 
 - Alle UI-Bausteine aus dem eigenen Designsystem, keine Ad-hoc-Styles
 - Secrets nur in .env bzw. Supabase Secrets; .env steht in .gitignore
 
+## Aktueller Stand
+- Meilenstein 0 ist abgeschlossen. Stand, getroffene Entscheidungen und technische Leitplanken: docs/STATUS.md (zuerst lesen!)
+- Nächster Meilenstein: docs/M1_PLAN.md
+- Expo SDK 57 (wegen Expo Go im Play Store), nicht auf eine neuere Version wechseln, ohne zu prüfen, welche SDK Expo Go im Store unterstützt
+
 ## Arbeitsweise
 - Arbeite Meilenstein für Meilenstein nach docs/MVP_BACKLOG.md
 - Vor jedem Meilenstein und jeder neuen Ansicht: kurzen Plan bzw. Layout-Konzept vorlegen und auf Freigabe warten
@@ -54,3 +59,5 @@ Berufstätige Erwachsene (ca. 35–60), die sich mit Geschwistern oder Partnern 
 - docs/ARCHITECTURE.md – Datenmodell, Agent-Pipeline
 - docs/MVP_BACKLOG.md – Meilensteine
 - docs/COMPLIANCE.md – DSGVO, Haftung, KI-Hinweise
+- docs/STATUS.md – Projektstand, Entscheidungen, Leitplanken
+- docs/M1_PLAN.md – Detailplan Meilenstein 1

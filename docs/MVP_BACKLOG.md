@@ -2,7 +2,7 @@
 
 Jeder Meilenstein endet mit einer lauffähigen App, die Nick auf dem Handy über Expo Go bzw. einen Development Build testen kann.
 
-## Meilenstein 0 – Designsystem und Demo mit Beispieldaten (zuerst!)
+## Meilenstein 0 – Designsystem und Demo mit Beispieldaten ✅ abgeschlossen (Oktober 2026)
 Ziel: eine wunderschöne, klickbare App ohne Backend, mit der Nick Gespräche mit 10–15 Betroffenen und 2–3 Pflegestützpunkten führt.
 - Expo-Projekt aufsetzen (TypeScript, Expo Router, NativeWind, Reanimated)
 - Designsystem nach docs/DESIGN.md: Tokens, Typografie, Basis-Komponenten, Hell/Dunkel
@@ -11,7 +11,7 @@ Ziel: eine wunderschöne, klickbare App ohne Backend, mit der Nick Gespräche mi
 - Einfache Landingpage mit Warteliste in /web (E-Mail mit Double-Opt-in)
 Dieser Code wird nicht weggeworfen, sondern in den nächsten Meilensteinen an echte Daten angeschlossen.
 
-## Meilenstein 1 – Konten, Familie, Datenmodell
+## Meilenstein 1 – Konten, Familie, Datenmodell ← als Nächstes (Detailplan: docs/M1_PLAN.md)
 - Supabase anbinden (Region Frankfurt), Login per Magic Link
 - Migrations für das Datenmodell, Row Level Security, RLS-Tests
 - Fall anlegen, Mitglieder per Link einladen, Rollen
