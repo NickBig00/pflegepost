@@ -10,10 +10,11 @@ import {
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { DemoProvider } from '@/demo/store';
+import { AuthProvider } from '@/features/auth/AuthProvider';
+import { RouteGuard } from '@/features/auth/RouteGuard';
 import { ThemeProvider, ToastProvider, useTheme } from '@/ui';
 
 SplashScreen.preventAutoHideAsync();
@@ -23,6 +24,7 @@ function Navigator() {
   return (
     <>
       <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
+      <RouteGuard>
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.canvas } }}>
         <Stack.Screen
           name="erfassen"
@@ -32,6 +34,7 @@ function Navigator() {
         <Stack.Screen name="rueckblick" options={{ presentation: 'modal' }} />
         <Stack.Screen name="onboarding" options={{ animation: 'fade', gestureEnabled: false }} />
       </Stack>
+      </RouteGuard>
     </>
   );
 }
@@ -44,19 +47,18 @@ export default function RootLayout() {
     Inter_700Bold,
   });
 
-  useEffect(() => {
-    if (fontsLoaded || fontError) SplashScreen.hideAsync();
-  }, [fontsLoaded, fontError]);
-
+  // The splash screen hides in RouteGuard once fonts and the session are ready.
   if (!fontsLoaded && !fontError) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
         <DemoProvider>
-          <ToastProvider>
-            <Navigator />
-          </ToastProvider>
+          <AuthProvider>
+            <ToastProvider>
+              <Navigator />
+            </ToastProvider>
+          </AuthProvider>
         </DemoProvider>
       </ThemeProvider>
     </GestureHandlerRootView>

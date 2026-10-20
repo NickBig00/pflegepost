@@ -1,11 +1,11 @@
-import { router } from 'expo-router';
 import { Check, Lock, MapPin, ShieldCheck, Sparkles, Users } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { useDemo } from '@/demo/store';
+import { useAuth } from '@/features/auth/AuthProvider';
 import { OnboardingFrame } from '@/features/onboarding/OnboardingFrame';
 import { useOnboardingDraft } from '@/features/onboarding/draft';
+import { errorMessage } from '@/lib/supabase';
 import { Button, Card, CheckRow, Icon, Text, useToast } from '@/ui';
 
 const points = [
@@ -21,20 +21,28 @@ const points = [
 
 export default function ConsentScreen() {
   const { draft } = useOnboardingDraft();
-  const { completeOnboarding } = useDemo();
+  const { setUpCase } = useAuth();
   const toast = useToast();
   const [agreed, setAgreed] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string>();
   const person = draft.caseName.trim() || 'die Person';
 
-  const finish = () => {
-    completeOnboarding({
-      firstName: draft.firstName.trim(),
-      caseName: draft.caseName.trim(),
-      legalBasis: draft.legalBasis,
-    });
-    router.dismissAll();
-    router.replace('/');
-    toast({ message: `Willkommen, ${draft.firstName.trim()}. Schön, dass du da bist.` });
+  // Saves name, consent and case; the route guard then opens the tabs.
+  const finish = async () => {
+    setError(undefined);
+    setSaving(true);
+    try {
+      await setUpCase({
+        firstName: draft.firstName,
+        caseName: draft.caseName,
+        legalBasis: draft.legalBasis,
+      });
+      toast({ message: `Willkommen, ${draft.firstName.trim()}. Schön, dass du da bist.` });
+    } catch (e) {
+      setError(errorMessage(e));
+      setSaving(false);
+    }
   };
 
   return (
@@ -49,6 +57,7 @@ export default function ConsentScreen() {
           size="lg"
           align="stretch"
           disabled={!agreed}
+          loading={saving}
           onPress={finish}
           accessibilityHint={agreed ? undefined : 'Bitte zuerst die Einwilligung ankreuzen'}
         />
@@ -66,6 +75,11 @@ export default function ConsentScreen() {
           </View>
         ))}
       </View>
+      {error ? (
+        <Text variant="callout" tone="accent" accessibilityLiveRegion="polite">
+          {error}
+        </Text>
+      ) : null}
       <Card tone="muted">
         <CheckRow
           label={`Ich bin einverstanden, dass Pflegepost Gesundheitsdaten von ${person} verarbeitet, um Briefe zu erklären und Aufgaben zu organisieren.`}

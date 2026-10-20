@@ -1,9 +1,8 @@
-import { Redirect, useIsFocused } from 'expo-router';
+import { useIsFocused } from 'expo-router';
 import { Tabs } from 'expo-router/js-tabs';
 import { FileText, House, ListChecks, Users, type LucideIcon } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useDemo } from '@/demo/store';
 import { fontFamily, haptics, tabBarHeight, useTheme, useToastBottomInset } from '@/ui';
 
 export default function TabsLayout() {
@@ -11,11 +10,6 @@ export default function TabsLayout() {
   const insets = useSafeAreaInsets();
   // Toasts sit above the tab bar, except while a modal covers the tabs.
   useToastBottomInset(useIsFocused() ? tabBarHeight : 0);
-  const { onboarded } = useDemo();
-
-  // The demo always starts with onboarding (it is part of what we show).
-  if (!onboarded) return <Redirect href="/onboarding" />;
-
   const tabIcon = (Glyph: LucideIcon) =>
     function TabIcon({ focused }: { focused: boolean }) {
       return (

@@ -29,6 +29,8 @@ export default function CaseScreen() {
   return (
     <OnboardingFrame
       step={1}
+      // Signed in by now; going back to the code screen would make no sense.
+      showBack={false}
       title="Für wen kümmerst du dich?"
       intro="Ein paar Angaben, damit sich deine Familie gleich zurechtfindet."
       footer={

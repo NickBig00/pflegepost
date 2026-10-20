@@ -3,6 +3,7 @@ import { Camera, CircleCheck, Mic } from 'lucide-react-native';
 import { View } from 'react-native';
 
 import { useDemo } from '@/demo/store';
+import { useAuth } from '@/features/auth/AuthProvider';
 import { senderStyle } from '@/features/documents/sender';
 import { TaskItem } from '@/features/tasks/TaskItem';
 import { receivedLabel } from '@/lib/dates';
@@ -20,6 +21,7 @@ import {
   ListItem,
   Screen,
   SectionHeader,
+  Text,
   useToast,
   type ColorToken,
 } from '@/ui';
@@ -34,6 +36,7 @@ const tileIconColor: Record<string, ColorToken> = {
 
 export default function HomeScreen() {
   const { careCase, currentUser, tasks, documents } = useDemo();
+  const { guard, leaveDemo } = useAuth();
   const toast = useToast();
   const upcoming = upcomingTasks(tasks, 3);
   const latest = [...documents].sort((a, b) => b.receivedOn.localeCompare(a.receivedOn))[0];
@@ -48,6 +51,17 @@ export default function HomeScreen() {
       title={`${greeting()}, ${firstName(currentUser.displayName)}`}
       headerAccessory={<Avatar name={currentUser.displayName} />}
     >
+      {guard.status === 'demo' ? (
+        <Card tone="info" padding="compact">
+          <View className="flex-row items-center gap-3">
+            <Text variant="callout" tone="onInfoSoft" className="flex-1">
+              Du siehst Beispieldaten. Melde dich an, um deine eigene Post zu erfassen.
+            </Text>
+            <Button label="Anmelden" size="sm" variant="secondary" onPress={leaveDemo} />
+          </View>
+        </Card>
+      ) : null}
+
       <View className="gap-3">
         <HeroAction
           icon={Camera}

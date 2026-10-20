@@ -13,8 +13,11 @@ export function OnboardingFrame({
   intro,
   children,
   footer,
+  showBack = step > 0,
 }: {
   step: number;
+  /** Back arrow; defaults to every step but the first. */
+  showBack?: boolean;
   title: string;
   intro?: string;
   children?: ReactNode;
@@ -30,7 +33,7 @@ export function OnboardingFrame({
         className="w-full max-w-[560px] flex-row items-center justify-between self-center px-5"
         style={{ paddingTop: insets.top + 8, minHeight: insets.top + 52 }}
       >
-        {step > 0 ? (
+        {showBack ? (
           <IconButton icon={ChevronLeft} accessibilityLabel="Zurück" onPress={() => router.back()} />
         ) : (
           <View className="w-11" />
