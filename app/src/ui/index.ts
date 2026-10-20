@@ -7,6 +7,7 @@ export { BottomSheet } from './components/BottomSheet';
 export { Button } from './components/Button';
 export { Card } from './components/Card';
 export { CheckRow } from './components/CheckRow';
+export { CodeField } from './components/CodeField';
 export { Chip } from './components/Chip';
 export { DeadlineBadge, deadlineAccessibilityLabel } from './components/DeadlineBadge';
 export { EmptyState } from './components/EmptyState';

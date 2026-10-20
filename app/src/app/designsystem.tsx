@@ -21,6 +21,7 @@ import {
   Button,
   Card,
   Chip,
+  CodeField,
   DeadlineBadge,
   EmptyState,
   Icon,
@@ -141,6 +142,7 @@ export default function DesignSystemScreen() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [filter, setFilter] = useState<'all' | 'mine' | 'open'>('all');
   const [email, setEmail] = useState('');
+  const [code, setCode] = useState('48');
 
   return (
     <Screen eyebrow="Pflegepost" title="Designsystem">
@@ -277,6 +279,8 @@ export default function DesignSystemScreen() {
           placeholder="z. B. Mama"
           error="Bitte gib einen Namen ein, damit deine Familie den Fall erkennt."
         />
+        <CodeField value={code} onChangeText={setCode} />
+        <CodeField value="" onChangeText={() => {}} invalid />
       </Section>
 
       <Section title="Chips">
