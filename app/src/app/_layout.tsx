@@ -25,15 +25,15 @@ function Navigator() {
     <>
       <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
       <RouteGuard>
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.canvas } }}>
-        <Stack.Screen
-          name="erfassen"
-          options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom' }}
-        />
-        <Stack.Screen name="original/[id]" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="rueckblick" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="onboarding" options={{ animation: 'fade', gestureEnabled: false }} />
-      </Stack>
+        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.canvas } }}>
+          <Stack.Screen
+            name="erfassen"
+            options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom' }}
+          />
+          <Stack.Screen name="original/[id]" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="rueckblick" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="onboarding" options={{ animation: 'fade', gestureEnabled: false }} />
+        </Stack>
       </RouteGuard>
     </>
   );

@@ -14,8 +14,11 @@ export function OnboardingFrame({
   children,
   footer,
   showBack = step > 0,
+  showProgress = true,
 }: {
   step: number;
+  /** Step dots; hidden on screens outside the three onboarding steps. */
+  showProgress?: boolean;
   /** Back arrow; defaults to every step but the first. */
   showBack?: boolean;
   title: string;
@@ -38,7 +41,7 @@ export function OnboardingFrame({
         ) : (
           <View className="w-11" />
         )}
-        <StepDots count={3} active={step} />
+        {showProgress ? <StepDots count={3} active={step} /> : null}
         <View className="w-11" />
       </View>
       <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1 }}>

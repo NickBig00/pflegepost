@@ -65,6 +65,18 @@ describe('route guard', () => {
     expect(guardRedirect({ status: 'demo' }, ['onboarding'])).toBe('/');
   });
 
+  test('invite links survive the sign-in', () => {
+    expect(guardRedirect(signedOut, ['einladung', '[token]'])).toBe('/onboarding');
+    const token = 'Ab3_-Ab3_-Ab3_-Ab3_-Ab3_-Ab3_-Ab';
+    expect(guardRedirect({ ...noCase, pendingInvite: token }, ['onboarding', 'fall'])).toBe(
+      `/einladung/${token}`,
+    );
+    expect(guardRedirect({ ...ready, pendingInvite: token }, ['(tabs)'])).toBe(`/einladung/${token}`);
+    expect(guardRedirect(noCase, ['einladung', '[token]'])).toBeNull();
+    expect(guardRedirect(ready, ['einladung', '[token]'])).toBeNull();
+    expect(guardRedirect(noCase, ['onboarding', 'beitreten'])).toBeNull();
+  });
+
   test('the design system showcase is always reachable', () => {
     expect(guardRedirect(signedOut, ['designsystem'])).toBeNull();
   });

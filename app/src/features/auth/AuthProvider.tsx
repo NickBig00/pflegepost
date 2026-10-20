@@ -1,14 +1,6 @@
 import type { Session } from '@supabase/supabase-js';
 import * as Linking from 'expo-linking';
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 import { parseAuthCallback } from '@/lib/authCallback';
 import type { GuardState } from '@/lib/routeGuard';
@@ -18,7 +10,13 @@ import { completeSetup, loadAccount, type Account, type CaseSetup } from '@/lib/
 type AuthState = {
   guard: GuardState;
   account: Account | null;
+  userId: string | null;
   email: string | null;
+  /** Invite token from a link opened before signing in; the guard returns to it. */
+  pendingInvite: string | null;
+  setPendingInvite: (token: string | null) => void;
+  /** Reloads profile, consent and cases (e.g. after joining or leaving a case). */
+  refreshAccount: () => Promise<void>;
   /** True after a sign-in link failed (expired or already used). */
   linkFailed: boolean;
   sendCode: (email: string) => Promise<void>;
@@ -44,6 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [reloadKey, setReloadKey] = useState(0);
   const [demo, setDemo] = useState(false);
   const [linkFailed, setLinkFailed] = useState(false);
+  const [pendingInvite, setPendingInvite] = useState<string | null>(null);
   const userId = session?.user.id ?? null;
 
   useEffect(() => {
@@ -105,14 +104,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [supabase],
   );
 
+  const refreshAccount = useCallback(async () => {
+    if (!userId) return;
+    const account = await loadAccount(supabase, userId);
+    setLoad({ userId, key: reloadKey, result: account });
+  }, [supabase, userId, reloadKey]);
+
   const setUpCase = useCallback(
     async (setup: CaseSetup) => {
       if (!userId) throw new Error('not_authenticated');
       await completeSetup(supabase, userId, setup);
-      const account = await loadAccount(supabase, userId);
-      setLoad({ userId, key: reloadKey, result: account });
+      await refreshAccount();
     },
-    [supabase, userId, reloadKey],
+    [supabase, userId, refreshAccount],
   );
 
   const signOut = useCallback(async () => {
@@ -125,13 +129,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let guard: GuardState;
     if (session === undefined) guard = { status: 'loading' };
     else if (!session) guard = demo ? { status: 'demo' } : { status: 'signedOut' };
-    else if (account) guard = { status: 'signedIn', hasCase: account.cases.length > 0 };
+    else if (account) guard = { status: 'signedIn', hasCase: account.cases.length > 0, pendingInvite };
     else if (current === 'error') guard = { status: 'error' };
     else guard = { status: 'loading' };
     return {
       guard,
       account,
+      userId,
       email: session?.user.email ?? null,
+      pendingInvite,
+      setPendingInvite,
+      refreshAccount,
       linkFailed,
       sendCode,
       verifyCode,
@@ -141,7 +149,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       enterDemo: () => setDemo(true),
       leaveDemo: () => setDemo(false),
     };
-  }, [session, userId, reloadKey, demo, load, linkFailed, sendCode, verifyCode, setUpCase, signOut]);
+  }, [
+    session,
+    userId,
+    reloadKey,
+    demo,
+    load,
+    linkFailed,
+    pendingInvite,
+    sendCode,
+    verifyCode,
+    refreshAccount,
+    setUpCase,
+    signOut,
+  ]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

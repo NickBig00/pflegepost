@@ -3,7 +3,13 @@ import { z } from 'zod';
 
 import type { LegalBasis } from '@/demo/schemas';
 
-import { careCaseRowSchema, consentRowSchema, profileRowSchema, type CareCaseRow, type ProfileRow } from './rows';
+import {
+  careCaseRowSchema,
+  consentRowSchema,
+  profileRowSchema,
+  type CareCaseRow,
+  type ProfileRow,
+} from './rows';
 
 /** Version of the consent text in onboarding/einwilligung.tsx. Bump when the text changes. */
 export const CONSENT_VERSION = '2026-10';

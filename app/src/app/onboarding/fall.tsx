@@ -34,14 +34,22 @@ export default function CaseScreen() {
       title="Für wen kümmerst du dich?"
       intro="Ein paar Angaben, damit sich deine Familie gleich zurechtfindet."
       footer={
-        <Button
-          label="Weiter"
-          icon={ArrowRight}
-          iconPosition="trailing"
-          size="lg"
-          align="stretch"
-          onPress={next}
-        />
+        <>
+          <Button
+            label="Weiter"
+            icon={ArrowRight}
+            iconPosition="trailing"
+            size="lg"
+            align="stretch"
+            onPress={next}
+          />
+          <Button
+            label="Ich wurde eingeladen"
+            variant="ghost"
+            align="center"
+            onPress={() => router.push('/onboarding/beitreten')}
+          />
+        </>
       }
     >
       <TextField

@@ -26,10 +26,10 @@ const MESSAGES: Record<AppErrorCode, string> = {
   not_allowed: 'Das kann nur, wer den Fall verwaltet.',
   member_not_found: 'Diese Person gehört nicht mehr zum Fall.',
   not_authenticated: 'Bitte melde dich noch einmal an.',
-  code_invalid: 'Der Code passt nicht oder ist abgelaufen. Schau noch mal nach oder lass dir einen neuen schicken.',
+  code_invalid:
+    'Der Code passt nicht oder ist abgelaufen. Schau noch mal nach oder lass dir einen neuen schicken.',
   email_invalid: 'Bitte prüf die E-Mail-Adresse.',
-  rate_limited:
-    'Gerade wurden sehr viele E-Mails verschickt. Versuch es in ein paar Minuten noch einmal.',
+  rate_limited: 'Gerade wurden sehr viele E-Mails verschickt. Versuch es in ein paar Minuten noch einmal.',
   network: 'Gerade gibt es keine Verbindung. Versuch es gleich noch einmal.',
   unknown: 'Das hat leider nicht geklappt. Versuch es bitte noch einmal.',
 };

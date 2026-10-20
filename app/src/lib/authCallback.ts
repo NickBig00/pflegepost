@@ -2,9 +2,7 @@
 // pflegepost://onboarding/link#access_token=…&refresh_token=…
 // or …#error=access_denied&error_code=otp_expired&error_description=…
 
-export type AuthCallback =
-  | { type: 'session'; accessToken: string; refreshToken: string }
-  | { type: 'error' };
+export type AuthCallback = { type: 'session'; accessToken: string; refreshToken: string } | { type: 'error' };
 
 export function parseAuthCallback(url: string | null | undefined): AuthCallback | null {
   if (!url) return null;
