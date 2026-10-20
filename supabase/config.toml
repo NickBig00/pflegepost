@@ -247,13 +247,15 @@ otp_expiry = 900
 
 # Sign-in mails contain both a link and the 6-digit code (the link often opens in the wrong browser).
 # New users get the confirmation template, returning users the magic link template.
-[auth.email.template.confirmation]
-subject = "Dein Anmeldecode für Pflegepost"
-content_path = "./supabase/templates/sign_in.html"
-
-[auth.email.template.magic_link]
-subject = "Dein Anmeldecode für Pflegepost"
-content_path = "./supabase/templates/sign_in.html"
+# Disabled until a custom SMTP provider is configured: on the free tier Supabase rejects
+# template changes with the built-in mailer (its default mails contain only the link).
+# [auth.email.template.confirmation]
+# subject = "Dein Anmeldecode für Pflegepost"
+# content_path = "./supabase/templates/sign_in.html"
+#
+# [auth.email.template.magic_link]
+# subject = "Dein Anmeldecode für Pflegepost"
+# content_path = "./supabase/templates/sign_in.html"
 
 # Uncomment to customize notification email template
 # [auth.email.notification.password_changed]
